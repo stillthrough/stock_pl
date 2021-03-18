@@ -159,3 +159,10 @@ gb['Duration'] = gb['ExitTime'] - gb['EntryTime']
 gb['Result'] = gb.apply(lambda x: 'Win' if x['Profit'] > 0 
                        else 'Loss' if x['Profit'] < 0
                        else 'Breakeven', axis = 1)
+
+gb.groupby('Date').agg(
+    TotalTrades = ('Transaction', 'count')
+    , TotalWins = ('Result', lambda x: (x == 'Win').sum())
+    , TotalLosses = ('Result', lambda x: (x == 'Loss').sum())
+    , TotalBreakeven = ('Result', lambda x: (x == 'Breakeven').sum())
+)
